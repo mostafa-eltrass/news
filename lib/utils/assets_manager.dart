@@ -27,6 +27,7 @@ class AssetsManager {
   static const String searchDarkIcon = "assets/images/search_dark_icon.png";
 
   static const String homeIcon = "assets/images/icon_home.png";
+  static const String homeIconDart = "assets/images/icon_home_dart.png";
   static const String languageIcon = "assets/images/icon_language.png";
   static const String themeIcon = "assets/images/icon_theme.png";
 }
