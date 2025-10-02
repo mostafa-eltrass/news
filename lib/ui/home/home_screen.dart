@@ -14,57 +14,55 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  newCategory? selectedCategory; // ✨ هنا حطيت الـ state variable في مكانه الصح
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      drawer:   AppDrawer(onRrowerItemClick:onDrowerItemClick ,), // ✨ هنا بتحط الـ Drawer الفعلي
+      drawer: AppDrawer(onRrowerItemClick: onDrawerItemClick), // ✅ Drawer
 
       appBar: AppBar(
         centerTitle: true,
         leading: Builder(
           builder: (context) => IconButton(
             onPressed: () {
-              Scaffold.of(context).openDrawer(); // ✅ هنا بتفتح الـ Drawer
+              Scaffold.of(context).openDrawer(); // ✅ فتح الـ Drawer
             },
             icon: Image.asset(
               isDark
-                  ? AssetsManager.homeIcon// بيضاء في الدارك
-                  :  AssetsManager.homeIconDart ,    // سوداء في اللايت
+                  ? AssetsManager.homeIcon
+                  : AssetsManager.homeIconDart,
             ),
           ),
-
         ),
-
-        title: Center(
-            child:
-            Text( selectedCategory == null?
-
-                AppLocalizations.of(context)!.home
-                :selectedCategory!.title,
-                style: Theme.of(context).textTheme.headlineLarge)
-      )
-
+        title: Text(
+          selectedCategory == null
+              ? AppLocalizations.of(context)!.home
+              : selectedCategory!.title,
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
       ),
 
-      body:  selectedCategory == null ?
-      CategoryFragment(onCategoryItemClick: onCategoryItemClick ,)
-          : CategoryDetails( category: selectedCategory!,)
+      body: selectedCategory == null
+          ? CategoryFragment(onCategoryItemClick: onCategoryItemClick)
+          : CategoryDetails(category: selectedCategory!),
     );
   }
-  newCategory? selectedCategory;
-  void onCategoryItemClick(newCategory newSelectedCategory){
-       selectedCategory = newSelectedCategory;
-       setState(() {
 
-       });
-  }
-    void onDrowerItemClick(){
-    selectedCategory = null;
-    Navigator.pop(context);
+  // ✅ ده لما تضغط على أي كاتيجوري
+  void onCategoryItemClick(newCategory newSelectedCategory) {
     setState(() {
-
+      selectedCategory = newSelectedCategory;
     });
-    }
+  }
+
+  // ✅ ده لما تضغط على أي عنصر في الـ Drawer
+  void onDrawerItemClick() {
+    setState(() {
+      selectedCategory = null;
+    });
+    Navigator.pop(context);
+  }
 }

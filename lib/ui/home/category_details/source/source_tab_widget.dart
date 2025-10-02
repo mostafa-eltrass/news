@@ -4,43 +4,39 @@ import 'package:news/ui/home/category_details/news/news_widget.dart';
 import 'package:news/ui/home/category_details/source/source_name.dart';
 import 'package:news/utils/app_colors.dart';
 
-class SourceTabWidget extends StatefulWidget {
+class SourceTabWidget extends StatelessWidget {
   SourceTabWidget({super.key, required this.sourceList});
-  List<Source> sourceList;
-
-  @override
-  State<SourceTabWidget> createState() => _SourceTabWidgetState();
-}
-
-class _SourceTabWidgetState extends State<SourceTabWidget> {
-  int selectedIndex = 0;
+  final List<Source> sourceList;
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context) .size.height;
-    var width = MediaQuery.of(context) .size.width;
+    var height = MediaQuery.of(context).size.height;
+
     return DefaultTabController(
-      length: widget.sourceList.length,
+      length: sourceList.length,
       child: Column(
         children: [
           TabBar(
-            onTap: (index) {
-              selectedIndex = index;
-              setState(() {});
-            },
             indicatorColor: Theme.of(context).indicatorColor,
             dividerColor: AppColors.transparentColor,
             tabAlignment: TabAlignment.start,
             isScrollable: true,
-            tabs: widget.sourceList.map((source) {
+            tabs: sourceList.map((source) {
               return SourceName(
                 source: source,
-                isSelected: selectedIndex == widget.sourceList.indexOf(source),
+                isSelected: false, // TabBarView هو اللي هيتحكم
               );
             }).toList(),
           ),
           SizedBox(height: height * 0.02),
-          Expanded(child: NewsWidget(source: widget.sourceList[selectedIndex])),
+          // هنا أهم جزء 👇
+          Expanded(
+            child: TabBarView(
+              children: sourceList.map((source) {
+                return NewsWidget(source: source);
+              }).toList(),
+            ),
+          ),
         ],
       ),
     );
